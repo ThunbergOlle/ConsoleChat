@@ -11,10 +11,11 @@ const rl = readline.createInterface({
 let onlineUser = user.username; // Easy to access name of the current user.
 console.log("Required all the modules... Starting up."); 
 const socket = io('http://127.0.0.1:4000'); //Connects to the right socket or ip adress...
-socket.on('connected',() => { // When we are connected.
-    console.log("Connection Established. Providing user details....");
+socket.on('connected',(data) => { // When we are connected.
+    console.log("There are " + data.onlineAmount+ " other users inside this global chatroom!");
     socket.emit('newUser', { //Register a new user to the server.
-        user: user.username
+        user: user.username,
+        id: user.id
     });
     // Set up prompt and more....
     rl.setPrompt("> ");
@@ -23,14 +24,26 @@ socket.on('connected',() => { // When we are connected.
         // Send the message, (sent it when the ENTER key is activated on the clients keyboard..)
         socket.emit('newMSG', {
             user: onlineUser,
-            message: message
+            id: user.id,
+            message: message,
         });
         rl.prompt();
     });
     // When we recieve a message
     socket.on('recieveMSG', (data) => {
-        console.log(data.green);
+        let user = data.user;
+        let id = data.id;
+        let message = data.message;
+        let admin = data.isAdmin;
+        if(user === undefined){
+            user = "[".white+"SERVER".red+"]".white;
+        }
+        if(admin){
+            console.log("[".white+"ADMIN".yellow+"] ".white+ user+ ": " + message);
+        }
+        else {
+            console.log(user+ ": " + message);
+        }
         rl.prompt();
-
     });
 })

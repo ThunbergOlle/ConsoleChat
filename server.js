@@ -1,36 +1,74 @@
 // This is the server script.
-const serverName = "EU North Server1";
+const serverName = "Server_Europe_1";
 const io = require('socket.io');
 const socket = io.listen(4000).sockets;
 const settings = require('./modules/settings');
+const time = require('node-get-time');
+const admins = require('./admins.json');
+const isAdmin = require('./modules/isAdmin');
 
-let online = []
+let online = [];
 let onlineAmount = 0;
+
 
 // Check if someone connected to the servewr with the correct ports.
 socket.on('connection', (socket) => {
-    socket.emit("connected");
+    socket.emit("connected", {
+        onlineAmount: onlineAmount,
+        online: online
+    });
     socket.on('newUser', (data) => {
         console.log("New user");
         let newUser = data.user;
-        online.push(newUser);
-        onlineAmount = online.length
+        let totalUser = {
+            user: data.user,
+            id: socket.id,
+            uid: data.id
+        }
+        online.push(totalUser);
         console.log(online);
-        console.log(onlineAmount);
+        onlineAmount += 1;
     });
 
     // If we get a new MSG from a client that's connected to the server.
     socket.on("newMSG", (data) => {
-        
+        let message = data.message;
         let firstChar = data.message.charAt(0);
         if(firstChar === "/"){
-            settings(message);
-        }
-        let message = data.message;
+            settings(message, onlineAmount, online, data.id, (res) => {
+                socket.emit('recieveMSG', {
+                    message: res
+                });
+            });
+        }else {
+        let id = data.id;
         let user = data.user;
         let finishedMessage = user + ": " + message;
-        console.log(user + ": " + message);
+        let admin = false;
+        console.log("["+time.now()+"] "+user + ": " + message); // Get the current time so we can console it together in the console.
         // Emit the message to ALL client EXEPT the one who sent it.
-        socket.broadcast.emit('recieveMSG', finishedMessage);
+        if(isAdmin(id)){
+            admin = true;
+        }
+        socket.broadcast.emit('recieveMSG', {
+            finishedMessage:finishedMessage,
+            user: user,
+            id: id,
+            message: message,
+            isAdmin: admin
+        });
+        }
+    });
+
+    // Successfully registers disconnects to the online player count and everything! Awesome!
+    socket.on('disconnect', () => {
+        onlineAmount -= 1;
+        console.log(onlineAmount);
+        for(let i = 0; i < online.length; i++){
+            if(online[i].id === socket.id){
+                online.splice(i, 1);
+                console.log(online);
+            }
+        } 
     });
 });
