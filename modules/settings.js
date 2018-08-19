@@ -1,10 +1,12 @@
 // The module for handling messages with "/" character in the beginning.
+
+const Commands = ['help', 'online','ban [ID]','getids','getid [USERNAME]']
+
 const isAdmin = require('./isAdmin');
 module.exports = (message, onlineAmount, online, id, res) => {
     // Get the message
     if(message === "/help"){
-        let help = "This function is not supported yet....";
-        res(help);
+        res(Commands);
     }
     if (message === "/online" && onlineAmount !== undefined){
         let send = "There is " + onlineAmount + " people here.";
