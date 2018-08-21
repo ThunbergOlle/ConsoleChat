@@ -1,9 +1,12 @@
 const http = require('http');
 const querystring = require('querystring');
+let user = require('../config.json');
 
+user = JSON.stringify(user);
 let mainIP = 'localhost';
 let postData = querystring.stringify({
-    verified: "true"
+    verified: "true",
+    user: user
 });
 let options = {
     hostname: mainIP,
