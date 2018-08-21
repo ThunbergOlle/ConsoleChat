@@ -3,11 +3,26 @@ const io = require('socket.io-client');
 const user = require('./config.json');
 const readline = require('readline');
 const colors = require('colors');
+const serverList = require('./modules/serverList.js');
+const term =  require('terminal-kit').terminal;
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 })
+serverList((data) => {
+    // Data is our variable for the server list given as a json array.
+    term.green('Choose a server to connect to...');
+    let list = [];
+
+    // GOING TO ADD A FOREACH LOOP HERE TO ADD EACH AS A SEPERATE INDEX.
+    list.push(data);
+
+    term.singleColumnMenu(list, (err, res) => {
+        term('\n').eraseLineAfter.green("Selected", res.selectedText);
+    });
+});
+
 let onlineUser = user.username; // Easy to access name of the current user.
 console.log("Required all the modules... Starting up."); 
 const socket = io('http://127.0.0.1:4000'); //Connects to the right socket or ip adress...

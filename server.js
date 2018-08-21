@@ -1,15 +1,21 @@
 // This is the server script.
 const serverName = "Server_Europe_1";
 const io = require('socket.io');
-const socket = io.listen(4000).sockets;
-const settings = require('./modules/settings');
 const time = require('node-get-time');
+const socket = io.listen(4000).sockets;
+
+// OWN MODULES OR CONFIGS. These files could be found inside the modules folder or this current folder.
+const settings = require('./modules/settings');
 const admins = require('./admins.json');
 const isAdmin = require('./modules/isAdmin');
+const mainServerContact = require('./modules/serverList.js');
 
 let online = [];
 let onlineAmount = 0;
 
+mainServerContact((data) => {
+    console.log(data);
+});
 
 // Check if someone connected to the servewr with the correct ports.
 socket.on('connection', (socket) => {
