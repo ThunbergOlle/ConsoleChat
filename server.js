@@ -9,6 +9,7 @@ const settings = require('./modules/settings');
 const admins = require('./admins.json');
 const isAdmin = require('./modules/isAdmin');
 const mainServerContact = require('./modules/serverList.js');
+const register = require('./modules/registerServer');
 
 let online = [];
 let onlineAmount = 0;
@@ -16,7 +17,9 @@ let onlineAmount = 0;
 mainServerContact((data) => {
     console.log(data);
 });
-
+register((data) => {
+    console.log(data);
+});
 // Check if someone connected to the servewr with the correct ports.
 socket.on('connection', (socket) => {
     socket.emit("connected", {

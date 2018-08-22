@@ -3,7 +3,7 @@ const querystring = require('querystring');
 let user = require('../config.json');
 
 user = JSON.stringify(user);
-let mainIP = 'localhost';
+let mainIP = '81.170.157.146';
 let postData = querystring.stringify({
     verified: "true",
     user: user
