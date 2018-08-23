@@ -1,6 +1,7 @@
 const http = require('http');
 const querystring = require('querystring');
 const server = require('../serverFiles/server.json');
+const fs = require('fs');
 
 module.exports = (callback) => {
 
@@ -36,6 +37,13 @@ module.exports = (callback) => {
         });
         req.write(postData);
         req.end(); 
+        
+        let serverconfig = {
+            ip: server.ip,
+            registered: "yes"
+        }
+        let data = JSON.stringify(serverconfig);
+        fs.writeFileSync('./serverFiles/server.json', data);
     }else {
         callback("Server already registered.");
     }
