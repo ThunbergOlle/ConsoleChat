@@ -45,7 +45,7 @@ module.exports = (callback) => {
         let data = JSON.stringify(serverconfig);
         fs.writeFileSync('./serverFiles/server.json', data);
     }else {
-        callback("Server already registered.");
+        callback("Server is in the database.");
     }
 
  

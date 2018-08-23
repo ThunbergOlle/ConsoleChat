@@ -39,5 +39,7 @@ module.exports = (message, onlineAmount, online, id, res) => {
             }
             res(idForUser);
         }
+    } else{
+        res("You don't have permissions to execute that command!");
     }
 }
