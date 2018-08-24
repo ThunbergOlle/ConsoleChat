@@ -15,16 +15,19 @@ console.log("Required all the modules... Starting up.");
 checkID((res) => {
     user = res;
 });
-serverList((data) => {
-    // Data is our variable for the server list given as a json array.
-    term.green('Choose a server to connect to...');
-    list = JSON.parse(data);
-    term.singleColumnMenu(list, (err, res) => {
-        term('\n').eraseLineAfter.green("Connecting to: ", res.selectedText);
-        chat(res.selectedText);
+ServerList = () => {
+    serverList((data) => {
+        // Data is our variable for the server list given as a json array.
+        term.green('Choose a server to connect to...');
+        list = JSON.parse(data);
+        term.singleColumnMenu(list, (err, res) => {
+            term('\n').eraseLineAfter.green("Connecting to: ", res.selectedText);
+            chat(res.selectedText);
+        });
+        
     });
-    
-});
+}
+ServerList();
 
 let onlineUser = user.username; // Easy to access name of the current user.
 
@@ -56,6 +59,9 @@ chat = (adress) => {
             let admin = data.isAdmin;
             if(user === undefined){
                 user = "[".white+"SERVER".red+"]".white;
+                if(message === "You have been kicked!"){
+                    ServerList();
+                }
             }
             if(admin){
                 console.log("[".white+"ADMIN".yellow+"] ".white+ user+ ": " + message);

@@ -1,9 +1,10 @@
 // The module for handling messages with "/" character in the beginning.
 
 const Commands = ['help', 'online','ban [ID]','getids','getid [USERNAME]']
+const server = require('../server.js');
 
 const isAdmin = require('./isAdmin');
-module.exports = (message, onlineAmount, online, id, res) => {
+module.exports = (message, onlineAmount, online, id, socket, res) => {
     // Get the message
     if(message === "/help"){
         res(Commands);
@@ -16,7 +17,12 @@ module.exports = (message, onlineAmount, online, id, res) => {
         // Kick players from the current session (Using socket ids.)
         if(message.substr(0, 5) === "/ban "){
             let target = message.substr(5);
-            res("Admin command not supported yet.. (PLAYER: "+target+".");
+            for(let i = 0; i < online.length; i++){
+                if(online[i].uid === target){
+                    res("You have been kicked!");
+                    socket.disconnect(true);
+                }
+            }
         }
         // Get the ids of everyone who is online!
         if(message.substr(0, 7) === "/getids"){

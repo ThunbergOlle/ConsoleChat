@@ -44,7 +44,7 @@ socket.on('connection', (socket) => {
         let message = data.message;
         let firstChar = data.message.charAt(0);
         if(firstChar === "/"){
-            settings(message, onlineAmount, online, data.id, (res) => {
+            settings(message, onlineAmount, online, data.id, socket, (res) => {
                 socket.emit('recieveMSG', {
                     message: res
                 });
