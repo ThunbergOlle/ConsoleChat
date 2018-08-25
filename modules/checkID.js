@@ -8,7 +8,8 @@ module.exports = (callback) => {
 
         let newConfig = {
             username: config.username,
-            id: id
+            id: id,
+            mainserver: config.mainserver
         }
         let data = JSON.stringify(newConfig);
         fs.writeFileSync('./config.json', data);
