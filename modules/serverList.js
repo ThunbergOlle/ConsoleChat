@@ -1,9 +1,9 @@
 const http = require('http');
 const querystring = require('querystring');
 let user = require('../config.json');
+let mainIP = user.mainserver
 
 user = JSON.stringify(user);
-let mainIP = user.mainserver
 let postData = querystring.stringify({
     verified: "true",
     user: user
