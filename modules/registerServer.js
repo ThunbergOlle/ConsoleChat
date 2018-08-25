@@ -2,11 +2,12 @@ const http = require('http');
 const querystring = require('querystring');
 const server = require('../serverFiles/server.json');
 const fs = require('fs');
+const config = require('../config.json');
 
 module.exports = (callback) => {
 
     if(server.registered === "no" && server.ip !== undefined){
-        let mainIP = '81.170.157.146';
+        let mainIP = config.mainserver
         let postData = querystring.stringify({
             verified: "true",
             newserver: server.ip
