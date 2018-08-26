@@ -16,4 +16,34 @@ You are setup! Now there should be a small server list showing up! Lovely! :hear
 
 ---
 ### Install the server :thumbsup:
-This will come very soon! :running:
+Do you want to create a community server to show up at the serverlist? Then please checkout [this](https://github.com/ThunbergOlle/cChatCommunityServer) repository..
+
+--- 
+### Chatrooms :herb:
+Every chat room is global. That means that everyone can join it at anytime anonymously. The servers that exists shows up at the server list inside the server browser that you will face when starting the file. :thought_balloon:
+
+**Kicking** :boom:
+
+Yes, you can be kicked from chatrooms by administrators if you don't behave good. 
+
+**Commands** :star:
+
+You can see the commands by typing:
+
+    /help
+
+**Prefixes** :fire:
+
+For admins there are prefixes by default so you will be able to see if someone is admin or not. Admins are added manualy by the id. More information on how you can add an admin to your server can be found [here](). 
+
+---
+### Config :page_with_curl:
+
+Inside the config.json file you will find 3 things to change. 
+- username: The username that you want to chat with
+- id: Leave this blank. The script will auto generate an id for you.
+- mainserver: The server IP that you want to use as the main server, don't change this.
+
+---
+### Bugs :bug:
+Report them [here](https://github.com/ThunbergOlle/ConsoleChat/issues/new)
