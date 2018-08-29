@@ -6,24 +6,33 @@ const serverList = require('./modules/serverList.js');
 const term =  require('terminal-kit').terminal;
 const checkID = require('./modules/checkID');
 
+
 let user;
+
+// Settings for readline node.
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 })
 console.log("Required all the modules... Starting up.");
+// Checking id of the user inside another script.
 checkID((res) => {
-    user = res;
+    user = res; //Sets the user to the response given when checking the id.
 });
 ServerList = () => {
     serverList((data) => {
         // Data is our variable for the server list given as a json array.
         term.green('Choose a server to connect to...');
-        list = JSON.parse(data);
-        term.singleColumnMenu(list, (err, res) => {
-            term('\n').eraseLineAfter.green("Connecting to: ", res.selectedText);
-            chat(res.selectedText);
-        });
+        if(data !== '[]'){ //If there are servers online, if the array given by the main server is not empty.
+            list = JSON.parse(data);
+            term.singleColumnMenu(list, (err, res) => {
+                term('\n').eraseLineAfter.green("Connecting to: ", res.selectedText);
+                chat(res.selectedText);
+            });
+        }else {
+            console.log("\nThere are not any servers online at the moment.. :(".red);
+        }
+
         
     });
 }
@@ -69,6 +78,7 @@ chat = (adress) => {
             else {
                 console.log(user+ ": " + message);
             }
+            // Prompt the prefix for the line (>)
             rl.prompt();
         });
     });
