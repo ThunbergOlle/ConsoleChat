@@ -23,7 +23,7 @@ ServerList = () => {
     serverList((data) => {
         // Data is our variable for the server list given as a json array.
         term.green('Choose a server to connect to...');
-        if(data !== '[]'){ //If there are servers online, if the array given by the main server is not empty.
+        if(data !== '[]' || data !== undefined){ //If there are servers online, if the array given by the main server is not empty.
             list = JSON.parse(data);
             term.singleColumnMenu(list, (err, res) => {
                 term('\n').eraseLineAfter.green("Connecting to: ", res.selectedText);
@@ -32,11 +32,10 @@ ServerList = () => {
         }else {
             console.log("\nThere are not any servers online at the moment.. :(".red);
         }
-
         
     });
 }
-ServerList();
+setTimeout(ServerList, 2000);
 
 let onlineUser = user.username; // Easy to access name of the current user.
 
