@@ -2,11 +2,13 @@
 const io = require('socket.io-client');
 const readline = require('readline');
 const colors = require('colors');
-const serverList = require('./modules/serverList.js');
 const term =  require('terminal-kit').terminal;
 const checkID = require('./modules/checkID');
+const time = require('node-get-time');
 
-
+const versionControl = require('./modules/versionControl');
+const serverList = require('./modules/serverList.js');
+const settings = require('./settings.json');
 let user;
 
 // Settings for readline node.
@@ -71,11 +73,14 @@ chat = (adress) => {
                     ServerList();
                 }
             }
-            if(admin){
-                console.log("[".white+"ADMIN".yellow+"] ".white+ user+ ": " + message);
+            let timestamp = '';
+            if(settings.timestamp === true) timestamp = '['+time.now().gray+'] ';
+            if(admin && settings.adminprefix === true){
+                console.log(timestamp+"[".white+"ADMIN".yellow+"] ".white+ user+ ": " + message);
             }
             else {
-                console.log(user+ ": " + message);
+
+                console.log(timestamp+user+ ": " + message);
             }
             // Prompt the prefix for the line (>)
             rl.prompt();
