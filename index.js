@@ -54,12 +54,18 @@ chat = (adress) => {
         rl.prompt();
         rl.on('line', (message) => {
             // Send the message, (sent it when the ENTER key is activated on the clients keyboard..)
+            if(message === '/leave'){
+                socket.disconnect();
+                console.log("Disconnected from server...".red);
+                ServerList();
+            }else {
             socket.emit('newMSG', {
                 user: onlineUser,
                 id: user.id,
                 message: message,
             });
             rl.prompt();
+            }
         });
         // When we recieve a message
         socket.on('recieveMSG', (data) => {
