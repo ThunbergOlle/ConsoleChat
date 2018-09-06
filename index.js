@@ -40,7 +40,21 @@ ServerList = () => {
 setTimeout(ServerList, 2000);
 
 let onlineUser = user.username; // Easy to access name of the current user.
-
+sendMessage = (message) => {
+    // Send the message, (sent it when the ENTER key is activated on the clients keyboard..)
+    if(message === '/leave'){
+        socket.disconnect();
+        console.log("Disconnected from server...".red);
+        ServerList();
+    }else {
+    socket.emit('newMSG', {
+        user: onlineUser,
+        id: user.id,
+        message: message,
+    });
+    rl.prompt();
+    }
+}
 chat = (adress) => {
     const socket = io('http://'+adress+':4000'); //Connects to the right socket or ip adress...
     socket.on('connected',(data) => { // When we are connected.
@@ -53,19 +67,7 @@ chat = (adress) => {
         rl.setPrompt("> ");
         rl.prompt();
         rl.on('line', (message) => {
-            // Send the message, (sent it when the ENTER key is activated on the clients keyboard..)
-            if(message === '/leave'){
-                socket.disconnect();
-                console.log("Disconnected from server...".red);
-                ServerList();
-            }else {
-            socket.emit('newMSG', {
-                user: onlineUser,
-                id: user.id,
-                message: message,
-            });
-            rl.prompt();
-            }
+            sendMessage(message);
         });
         // When we recieve a message
         socket.on('recieveMSG', (data) => {

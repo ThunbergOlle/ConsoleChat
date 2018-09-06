@@ -2,7 +2,7 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-const {app, BrowserWindow} = electron;
+const {app, BrowserWindow, Menu} = electron;
 
 let mainWindow;
 
@@ -18,5 +18,15 @@ app.on('ready', () => {
         pathname: path.join(__dirname, './windows/mainWindow.html'),
         protocol: 'file:',
         slashes: true
-    }))
-})
+    }));
+
+    // Build menu from template (Mainwindowtemplte)
+    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+    Menu.setApplicationMenu(mainMenu);
+});
+
+const mainMenuTemplate = [
+    {
+        label: 'File'
+    }
+]

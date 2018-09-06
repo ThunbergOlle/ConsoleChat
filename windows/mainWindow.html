@@ -9,11 +9,23 @@
         <title>ConsoleChat UI</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+        <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>    </head>
     <body>
-        <h1>ConsoleChat</h1>
-        
-        <script src="" async defer></script>
+        <div class="container">
+            <!-- Heading -->
+            <div class="block">
+                <h1 class="title is-1 has-text-centered">ConsoleChat</h1><p class="has-text-centered has-text-weight-light is-italic content is-medium">"Everyone in one place <3"</p>
+            </div>
+            <div class="block">
+                <div class="field">
+                <div class="control" style="margin-right: 15%; margin-left: 15%;">
+                    <textarea class="textarea is-success" rows="10" type="text" placeholder="Messages here..." id="messagearea"></textarea>
+                </div>
+                </div>
+            </div>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="./javascript/main.js" async defer></script>
     </body>
 </html>
