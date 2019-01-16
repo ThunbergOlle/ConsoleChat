@@ -11,6 +11,7 @@ const serverList = require('./modules/serverList.js');
 const settings = require('./settings.json');
 let user;
 
+let socket;
 // Settings for readline node.
 const rl = readline.createInterface({
     input: process.stdin,
@@ -21,10 +22,31 @@ console.log("Required all the modules... Starting up.");
 checkID((res) => {
     user = res; //Sets the user to the response given when checking the id.
 });
+MainMenu = () => {
+    term( '\n' ).eraseLineAfter.green('Console Chat');
+    var items = [
+        'Server List' ,
+        'Change Username' ,
+        'Randomize ID'
+    ] ;
+    
+    term.singleColumnMenu( items , function( error , response ) {
+        if(response.selectedIndex === 0){
+            ServerList();
+        }
+        if(response.selectedIndex === 1){
+            ChangeUsername();
+        }
+    } ) ;
+}
+setTimeout(MainMenu, 500);
+ChangeUsername = () => {
+    console.log("Soon!");
+}
 ServerList = () => {
     serverList((data) => {
         // Data is our variable for the server list given as a json array.
-        term.green('Choose a server to connect to...');
+        term.green('\nChoose a server to connect to...');
         if(data !== '[]' || data !== undefined){ //If there are servers online, if the array given by the main server is not empty.
             list = JSON.parse(data);
             term.singleColumnMenu(list, (err, res) => {
@@ -37,7 +59,7 @@ ServerList = () => {
         
     });
 }
-setTimeout(ServerList, 2000);
+MainMenu();
 
 let onlineUser = user.username; // Easy to access name of the current user.
 sendMessage = (message) => {
@@ -56,9 +78,11 @@ sendMessage = (message) => {
     }
 }
 chat = (adress) => {
-    const socket = io('http://'+adress+':4000'); //Connects to the right socket or ip adress...
+    socket = io('http://'+adress+':4000'); //Connects to the right socket or ip adress...
     socket.on('connected',(data) => { // When we are connected.
         console.log("\nThere are " + data.onlineAmount+ " other users inside this global chatroom!");
+        term('\n').eraseLineAfter.red("Use /help for available commands");
+        console.log("")
         socket.emit('newUser', { //Register a new user to the server.
             user: user.username,
             id: user.id

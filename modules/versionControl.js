@@ -1,7 +1,7 @@
 const checkUpdate = require('check-update-github');
 const pkg = require('../package.json');
 const settings = require('../settings.json');
-
+const term = require('terminal-kit').Terminal;
 module.exports = checkUpdate({
     name: pkg.name, 
     currentVersion: pkg.version, 
@@ -9,6 +9,6 @@ module.exports = checkUpdate({
     branch: 'master'
     }, function(err, latestVersion, defaultMessage){
     if(!err && settings.showUpdates === true){
-        console.log(defaultMessage);
+        term( '\n' ).eraseLineAfter(defaultMessage);
     }
 });
